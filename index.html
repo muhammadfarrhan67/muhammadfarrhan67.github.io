@@ -11,7 +11,6 @@
 <style>
 :root{--bg:#f6f4ef;--bg2:#ecE9e1;--fg:#14171c;--mut:#4d5560;--line:#cfcbc0;--acc:#0b5cff;--acc2:#007c91;--grn:#2f7a55;--amb:#a86a00;--card:#fbfaf7;--navbg:rgba(246,244,239,.88)}
 :root[data-theme=dark]{--bg:#0b1020;--bg2:#10172b;--fg:#e8ecf5;--mut:#9aa6bd;--line:#26304a;--acc:#5b9bff;--acc2:#4fd1e6;--grn:#5fcf9a;--amb:#e8b04a;--card:#0f1628;--navbg:rgba(11,16,32,.88)}
-@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0b1020;--bg2:#10172b;--fg:#e8ecf5;--mut:#9aa6bd;--line:#26304a;--acc:#5b9bff;--acc2:#4fd1e6;--grn:#5fcf9a;--amb:#e8b04a;--card:#0f1628;--navbg:rgba(11,16,32,.88)}}
 *{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:72px;padding-top:env(safe-area-inset-top,0px)}
 body{margin:0;background:var(--bg);color:var(--fg);font:17px/1.65 "Inter Tight",system-ui,sans-serif;padding-bottom:env(safe-area-inset-bottom,0px);background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:80px 80px;background-attachment:fixed;background-blend-mode:soft-light}
 a{color:var(--acc)}.mono,.tag,.eyebrow,.meta{font-family:"JetBrains Mono",ui-monospace,monospace}
@@ -37,7 +36,9 @@ section{padding:96px 0;border-top:1px solid var(--line)}
 .panel:before{content:"";position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--acc2),transparent);animation:scan 5s linear infinite}@keyframes scan{from{top:0}to{top:100%}}
 .mf{font:600 120px/1 "JetBrains Mono",monospace;color:var(--acc);letter-spacing:-.05em}.panel dl{margin:14px 0 0;font-size:13px}.panel dt{color:var(--mut);float:left;width:96px;font-family:"JetBrains Mono",monospace}.panel dd{margin:0 0 4px 100px}
 svg.wave{width:100%;height:56px}svg.wave path{stroke:var(--acc2);fill:none;stroke-width:1.5;stroke-dasharray:6 4;animation:dash 3s linear infinite}@keyframes dash{to{stroke-dashoffset:-40}}
-.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border:1px solid var(--line);background:var(--card)}.strip div{padding:20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.strip b{display:block;font-size:28px;font-weight:600}.strip span{font-size:13px;color:var(--mut)}
+.strip{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));border:1px solid var(--line);background:var(--card)}.strip div{padding:20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}.strip b{display:block;font-size:clamp(18px,2vw,24px);font-weight:600;white-space:nowrap}
+@media(min-width:1200px){.strip{grid-template-columns:1fr 1fr 1.4fr 1fr 1fr 1fr 1fr}}
+@media(max-width:600px){.strip div{padding:16px}}.strip span{font-size:13px;color:var(--mut)}
 .about p{margin:0 0 18px}mark{background:none;color:var(--fg);box-shadow:inset 0 -.4em color-mix(in srgb,var(--acc) 22%,transparent)}
 .phil{border-left:3px solid var(--acc2);padding:8px 16px;margin-top:24px;font-size:20px}
 .tl{position:relative;margin:0;padding:0;list-style:none}.tl:before{content:"";position:absolute;left:7px;top:0;bottom:0;width:1px;background:var(--line)}.tl>li{position:relative;padding:0 0 32px 36px}.tl>li:before{content:"";position:absolute;left:0;top:8px;width:15px;height:15px;border:2px solid var(--acc);background:var(--bg);border-radius:50%}.tl>li.now:before{background:var(--acc)}
@@ -180,7 +181,7 @@ $('#skillgrid').innerHTML=D.skills.map(s=>`<div class="card"><h3>${e(s[0])}</h3>
 $('#yr').textContent=new Date().getFullYear();
 // theme, menu, nav tracking, reveal
 const r=document.documentElement,T=()=>{try{return localStorage.getItem('t')}catch(_){return null}};if(T())r.dataset.theme=T();
-$('#theme').onclick=()=>{const d=(r.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'))=='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('t',d)}catch(_){}};
+$('#theme').onclick=()=>{const d=(r.dataset.theme||'light')=='dark'?'light':'dark';r.dataset.theme=d;try{localStorage.setItem('t',d)}catch(_){}};
 $('#burger').onclick=()=>{const o=$('#links').classList.toggle('open');$('#burger').setAttribute('aria-expanded',o)};
 $('#links').onclick=()=>{$('#links').classList.remove('open');$('#burger').setAttribute('aria-expanded',false)};
 const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){document.querySelectorAll('.links a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')=='#'+x.target.id))}}),{rootMargin:'-40% 0px -55% 0px'});document.querySelectorAll('section[id]').forEach(s=>io.observe(s));
